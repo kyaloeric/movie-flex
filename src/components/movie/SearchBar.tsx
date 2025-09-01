@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Search, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Input from './ui/Input';
-import Button from './ui/Button';
-import { useMovieStore } from '../stores/useMovieStore';
+import Input from '../ui/Input';
+import Button from '../ui/Button';
+import { useMovieStore } from '../../stores/useMovieStore';
 
 const SearchBar: React.FC = () => {
   const [query, setQuery] = useState('');

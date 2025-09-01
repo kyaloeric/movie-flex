@@ -86,3 +86,7 @@ export interface SearchFilters {
   genre?: number;
   sort_by?: 'popularity.desc' | 'vote_average.desc' | 'release_date.desc';
 }
+
+export type WatchlistItem = Movie & {
+  added_at: string;
+};

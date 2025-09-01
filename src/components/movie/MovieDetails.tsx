@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Star, Calendar, Clock, DollarSign, Users, Award } from 'lucide-react';
-import Button from './ui/Button';
-import LoadingSkeleton from './ui/LoadingSkeleton';
-import type { MovieDetails as MovieDetailsType } from '../types/movie';
-import { tmdbApi } from '../services/tmdbApi';
+import Button from '../ui/Button';
+import LoadingSkeleton from '../ui/LoadingSkeleton';
+import type { MovieDetails as MovieDetailsType } from '../../types/movie';
+import { tmdbApi } from '../../services/tmdbApi';
 
 interface MovieDetailsProps {
   isOpen: boolean;

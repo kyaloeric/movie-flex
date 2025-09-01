@@ -1,12 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Film, Search, User, LogOut, TrendingUp, Star } from 'lucide-react';
-import Button from './ui/Button';
-import { useAuthStore } from '../stores/useAuthStore';
+import { Film, Search, User, LogOut, TrendingUp, Star, Bookmark } from 'lucide-react';
+import Button from '../ui/Button';
+import { useAuthStore } from '../../stores/useAuthStore';
 
 interface NavigationProps {
-  currentView: 'popular' | 'top-rated' | 'now-playing' | 'search';
-  onViewChange: (view: 'popular' | 'top-rated' | 'now-playing' | 'search') => void;
+  currentView: 'popular' | 'top-rated' | 'now-playing' | 'search' | 'watchlist';
+  onViewChange: (view: 'popular' | 'top-rated' | 'now-playing' | 'search' | 'watchlist') => void;
   onSearchToggle: () => void;
   showSearch: boolean;
 }
@@ -23,6 +23,7 @@ const Navigation: React.FC<NavigationProps> = ({
     { id: 'popular' as const, label: 'Popular', icon: TrendingUp },
     { id: 'top-rated' as const, label: 'Top Rated', icon: Star },
     { id: 'now-playing' as const, label: 'Now Playing', icon: Film },
+    { id: 'watchlist' as const, label: 'Watchlist', icon: Bookmark },
   ];
 
   return (

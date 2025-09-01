@@ -3,7 +3,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useMovieStore } from '../../stores/useMovieStore';
 import { tmdbApi } from '../../services/tmdbApi';
 
-// Mock the TMDB API
 vi.mock('../../services/tmdbApi');
 const mockedTmdbApi = vi.mocked(tmdbApi);
 
@@ -97,7 +96,6 @@ describe('useMovieStore', () => {
   it('clears search results', async () => {
     const { result } = renderHook(() => useMovieStore());
     
-    // Set some search state first
     await act(async () => {
       useMovieStore.setState({
         searchResults: [{ id: 1 } as any],
@@ -117,7 +115,6 @@ describe('useMovieStore', () => {
   it('clears error state', async () => {
     const { result } = renderHook(() => useMovieStore());
     
-    // Set error state first
     await act(async () => {
       useMovieStore.setState({ error: 'Test error' });
     });

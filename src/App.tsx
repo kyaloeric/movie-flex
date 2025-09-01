@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Navigation from './components/Navigation';
-import SearchBar from './components/SearchBar';
-import MovieGrid from './components/MovieGrid';
-import MovieDetails from './components/MovieDetails';
+import Navigation from './components/movie/Navigation';
+import SearchBar from './components/movie/SearchBar';
+import MovieGrid from './components/movie/MovieGrid';
+import WatchlistPage from './pages/WatchlistPage';
+import MovieDetails from './components/movie/MovieDetails';
 import AuthModal from './components/auth/AuthModal';
 import ErrorBoundary from './components/ErrorBoundary';
 import Button from './components/ui/Button';
@@ -12,7 +13,7 @@ import { useAuthStore } from './stores/useAuthStore';
 import { useMovieStore } from './stores/useMovieStore';
 import type { Movie } from './types/movie';
 
-type ViewType = 'popular' | 'top-rated' | 'now-playing' | 'search';
+type ViewType = 'popular' | 'top-rated' | 'now-playing' | 'search' | 'watchlist';
 
 function App() {
   const [currentView, setCurrentView] = useState<ViewType>('popular');
@@ -58,6 +59,8 @@ function App() {
           break;
         case 'now-playing':
           fetchNowPlayingMovies();
+          break;
+        case 'watchlist':
           break;
         case 'search':
           break;
@@ -154,6 +157,8 @@ function App() {
                     ? 'Top Rated Movies'
                     : currentView === 'now-playing'
                     ? 'Now Playing'
+                    : currentView === 'watchlist'
+                    ? 'My Watchlist'
                     : 'Movies'}
                 </h2>
                 <p className="text-gray-400 mt-2">
@@ -165,15 +170,25 @@ function App() {
                     ? 'The highest rated movies of all time'
                     : currentView === 'now-playing'
                     ? 'Movies currently playing in theaters'
+                    : currentView === 'watchlist'
+                    ? 'Movies you want to watch'
                     : 'Browse movies'}
                 </p>
               </motion.div>
 
-              <MovieGrid
-                movies={moviesToShow}
-                loading={isLoading}
-                onMovieClick={handleMovieClick}
-              />
+
+              {/* Content based on current view */}
+              {currentView === 'watchlist' ? (
+                <WatchlistPage onMovieClick={handleMovieClick} />
+              ) : (
+                <MovieGrid
+                  movies={moviesToShow}
+                  loading={isLoading}
+                  onMovieClick={handleMovieClick}
+                />
+              )}
+
+
             </main>
 
             <MovieDetails

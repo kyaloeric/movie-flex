@@ -2,9 +2,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import MovieCard from './MovieCard';
-import LoadingSkeleton from './ui/LoadingSkeleton';
-import type { Movie } from '../types/movie';
-import { useMovieStore } from '../stores/useMovieStore';
+import LoadingSkeleton from '../ui/LoadingSkeleton';
+import type { Movie } from '../../types/movie';
+import { useMovieStore } from '../../stores/useMovieStore';
 
 interface MovieGridProps {
   movies: Movie[];

@@ -1,9 +1,8 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import SearchBar from '../../components/SearchBar';
+import SearchBar from '../../components/movie/SearchBar';
 import { useMovieStore } from '../../stores/useMovieStore';
 
-// Mock the store
 vi.mock('../../stores/useMovieStore');
 
 const mockUseMovieStore = vi.mocked(useMovieStore);
@@ -79,7 +78,6 @@ describe('SearchBar', () => {
     const input = screen.getByPlaceholderText('Search for movies...');
     fireEvent.change(input, { target: { value: 'test' } });
     
-    // Clear button should appear
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
 

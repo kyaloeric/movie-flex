@@ -3,7 +3,6 @@ import type { Movie, MovieDetails, Genre, SearchFilters } from '../types/movie';
 import { tmdbApi } from '../services/tmdbApi';
 
 interface MovieStore {
-  // State
   movies: Movie[];
   currentMovie: MovieDetails | null;
   genres: Genre[];
@@ -31,7 +30,6 @@ interface MovieStore {
 }
 
 export const useMovieStore = create<MovieStore>((set, get) => ({
-  // Initial state
   movies: [],
   currentMovie: null,
   genres: [],
@@ -45,7 +43,6 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
   totalPages: 1,
   hasMorePages: true,
 
-  // Fetch popular movies
   fetchPopularMovies: async (page = 1, append = false) => {
     set({ loading: true, error: null });
     try {
@@ -62,7 +59,6 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
     }
   },
 
-  // Fetch top rated movies
   fetchTopRatedMovies: async (page = 1, append = false) => {
     set({ loading: true, error: null });
     try {
@@ -79,7 +75,6 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
     }
   },
 
-  // Fetch now playing movies
   fetchNowPlayingMovies: async (page = 1, append = false) => {
     set({ loading: true, error: null });
     try {
@@ -96,7 +91,6 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
     }
   },
 
-  // Fetch movie details
   fetchMovieDetails: async (movieId: number) => {
     set({ loading: true, error: null });
     try {
@@ -114,7 +108,6 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
     }
   },
 
-  // Search movies
   searchMovies: async (query: string, page = 1, append = false) => {
     if (!query.trim()) {
       set({ searchResults: [], searchQuery: '', searchLoading: false });
@@ -136,7 +129,6 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
     }
   },
 
-  // Fetch genres
   fetchGenres: async () => {
     try {
       const response = await tmdbApi.getGenres();
@@ -146,14 +138,12 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
     }
   },
 
-  // Set search filters
   setSearchFilters: (filters: Partial<SearchFilters>) => {
     set((state) => ({
       searchFilters: { ...state.searchFilters, ...filters },
     }));
   },
 
-  // Clear search
   clearSearch: () => {
     set({
       searchResults: [],
@@ -165,12 +155,10 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
     });
   },
 
-  // Clear error
   clearError: () => {
     set({ error: null });
   },
 
-  // Load more movies (pagination)
   loadMoreMovies: async () => {
     const { currentPage, hasMorePages, searchQuery } = get();
     if (!hasMorePages) return;

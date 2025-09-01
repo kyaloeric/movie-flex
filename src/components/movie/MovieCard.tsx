@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import WatchlistButton from './WatchlistButton';
 import { Star, Calendar, TrendingUp } from 'lucide-react';
-import type { Movie } from '../types/movie';
-import { tmdbApi } from '../services/tmdbApi';
+import type { Movie } from '../../types/movie';
+import { tmdbApi } from '../../services/tmdbApi';
 
 interface MovieCardProps {
   movie: Movie;
@@ -36,10 +37,15 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, onClick, index = 0 }) => {
             target.src = '/placeholder-movie.jpg';
           }}
         />
-        
+                
         {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          {/* Watchlist Button */}
+          <div className="absolute bottom-2 left-2">
+            <WatchlistButton movie={movie} size="sm" variant="ghost" />
+          </div>
+        </div>
+
         {/* Rating */}
         <div className="absolute top-2 right-2 bg-black bg-opacity-80 rounded-full px-2 py-1 flex items-center space-x-1">
           <Star className="h-3 w-3 text-yellow-400 fill-current" />

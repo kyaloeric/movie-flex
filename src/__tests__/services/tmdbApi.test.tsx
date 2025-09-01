@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import axios from 'axios';
 import { tmdbApi } from '../../services/tmdbApi';
 
-// Mock axios
 vi.mock('axios');
 const mockedAxios = vi.mocked(axios);
 

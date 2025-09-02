@@ -3,7 +3,7 @@
 A modern, responsive movie recommendation application built with React, TypeScript, and Tailwind CSS.
 
 
-Check out the **designs** on Figma [here](https://www.figma.com/design/SyFgGk4lgKIymNiQEfjh3m/Movie-app?node-id=12-1788&t=29gYnOGPkGxAdHMd-1).  
+Check out the **designs** on Figma [here](https://www.figma.com/design/SyFgGk4lgKIymNiQEfjh3m/Movie-app?node-id=12-1788&t=EujxT34StclQVoXf-1).  
 See the **live deployed project** on Netlify [here](https://moviefleix.netlify.app/).
 
 

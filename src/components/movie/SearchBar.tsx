@@ -55,12 +55,31 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearchStart, onReturnToDiscover
           onFocus={handleFocus}
           onBlur={handleBlur}
           className={`
-            pr-20 transition-all duration-200 h-12 text-base
+            pr-16 transition-all duration-200 h-12 text-base
             ${isFocused ? 'ring-2 ring-red-500 border-red-500' : 'border-gray-600'}
           `}
         />
         
-        <div className="absolute right-12 top-1/2 transform -translate-y-1/2">
+        <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
+          <AnimatePresence>
+            {query && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+              >
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleClear}
+                  className="p-1.5 hover:bg-gray-700 rounded-full text-gray-400 hover:text-red-400"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          
           <Button
             variant="ghost"
             size="sm"
@@ -71,26 +90,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearchStart, onReturnToDiscover
             <Search className="h-4 w-4" />
           </Button>
         </div>
-        
-        <AnimatePresence>
-          {(query || searchQuery) && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10"
-            >
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleClear}
-                className="p-1.5 hover:bg-gray-700 rounded-full text-gray-400 hover:text-red-400"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
 
       <AnimatePresence>

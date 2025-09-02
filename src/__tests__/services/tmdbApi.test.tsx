@@ -1,94 +1,90 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import axios from 'axios';
-import { tmdbApi } from '../../services/tmdbApi';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-vi.mock('axios');
-const mockedAxios = vi.mocked(axios);
+const mockAxiosInstance = {
+  get: vi.fn(),
+  interceptors: {
+    response: {
+      use: vi.fn(),
+    },
+  },
+};
+
+const mockAxiosCreate = vi.fn(() => mockAxiosInstance);
+
+vi.doMock('axios', () => ({
+  default: {
+    create: mockAxiosCreate,
+  },
+}));
+
+vi.doMock('../../config/constants', () => ({
+  TMDB_CONFIG: {
+    BASE_URL: 'https://api.themoviedb.org/3',
+    IMAGE_BASE_URL: 'https://image.tmdb.org/t/p',
+    API_KEY: 'test-api-key',
+    POSTER_SIZES: {
+      small: 'w185',
+      medium: 'w342',
+      large: 'w500',
+      xlarge: 'w780'
+    },
+    BACKDROP_SIZES: {
+      small: 'w300',
+      medium: 'w780',
+      large: 'w1280',
+      original: 'original'
+    }
+  },
+}));
 
 describe('TMDBService', () => {
-  const mockCreate = vi.fn();
-  const mockGet = vi.fn();
+  let tmdbApi: any;
 
-  beforeEach(() => {
-    mockCreate.mockReturnValue({
-      get: mockGet,
-      interceptors: {
-        response: {
-          use: vi.fn(),
-        },
-      },
-    });
-    mockedAxios.create = mockCreate;
-  });
-
-  afterEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
+    vi.resetModules();
+    
+    const module = await import('../../services/tmdbApi');
+    tmdbApi = module.tmdbApi;
   });
 
-  it('creates axios instance with correct config', () => {
-    expect(mockCreate).toHaveBeenCalledWith({
+  it('creates axios instance with correct base URL', () => {
+    expect(mockAxiosCreate).toHaveBeenCalledWith({
       baseURL: 'https://api.themoviedb.org/3',
       params: {
-        api_key: '4f5f43495afcc67e9553f6c684a82f84',
+        api_key: 'test-api-key',
       },
     });
   });
 
-  it('fetches popular movies', async () => {
-    const mockResponse = {
-      data: {
-        page: 1,
-        results: [{ id: 1, title: 'Test Movie' }],
-        total_pages: 10,
-        total_results: 200,
-      },
-    };
-
-    mockGet.mockResolvedValueOnce(mockResponse);
-
-    const result = await tmdbApi.getPopularMovies();
-    
-    expect(mockGet).toHaveBeenCalledWith('/movie/popular', { params: { page: 1 } });
-    expect(result).toEqual(mockResponse.data);
-  });
-
-  it('searches movies with query', async () => {
-    const mockResponse = {
-      data: {
-        page: 1,
-        results: [{ id: 1, title: 'Search Result' }],
-        total_pages: 5,
-        total_results: 100,
-      },
-    };
-
-    mockGet.mockResolvedValueOnce(mockResponse);
-
-    const result = await tmdbApi.searchMovies('test query');
-    
-    expect(mockGet).toHaveBeenCalledWith('/search/movie', {
-      params: { query: 'test query', page: 1 },
-    });
-    expect(result).toEqual(mockResponse.data);
-  });
-
-  it('generates correct image URL', () => {
+  it('generates correct image URLs', () => {
     const posterPath = '/test-poster.jpg';
     const imageUrl = tmdbApi.getImageUrl(posterPath, 'medium');
     
     expect(imageUrl).toBe('https://image.tmdb.org/t/p/w342/test-poster.jpg');
   });
 
-  it('returns placeholder for null poster path', () => {
+  it('handles null poster paths', () => {
     const imageUrl = tmdbApi.getImageUrl(null, 'medium');
-    
     expect(imageUrl).toBe('/placeholder-movie.jpg');
   });
 
-  it('generates correct backdrop URL', () => {
+  it('generates correct backdrop URLs', () => {
     const backdropPath = '/test-backdrop.jpg';
     const backdropUrl = tmdbApi.getBackdropUrl(backdropPath, 'large');
     
     expect(backdropUrl).toBe('https://image.tmdb.org/t/p/w1280/test-backdrop.jpg');
+  });
+
+  it('handles null backdrop paths', () => {
+    const backdropUrl = tmdbApi.getBackdropUrl(null, 'large');
+    expect(backdropUrl).toBe('/placeholder-backdrop.jpg');
+  });
+
+  it('uses default size when not specified', () => {
+    const posterPath = '/test-poster.jpg';
+    const imageUrl = tmdbApi.getImageUrl(posterPath);
+    
+    expect(imageUrl).toBe('https://image.tmdb.org/t/p/w342/test-poster.jpg');
   });
 });

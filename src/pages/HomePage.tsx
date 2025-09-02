@@ -9,124 +9,81 @@ interface HomePageProps {
 
 const HomePage: React.FC<HomePageProps> = ({ onGetStarted }) => {
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="h-screen relative overflow-hidden flex flex-col">
       <div className="absolute inset-0">
         <img
-          src="https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg"
+          src="https://images.pexels.com/photos/7991241/pexels-photo-7991241.jpeg"
           alt="Movie theater background"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-black/30" />
+        <div className="absolute inset-0 bg-black/70" />
       </div>
 
-      <header className="relative z-10 flex items-center justify-between p-6">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="flex items-center space-x-3"
-        >
-          <div className="bg-red-600 p-2 rounded-lg">
-            <Film className="h-8 w-8 text-white" />
+      <header className="relative z-10 flex items-center justify-between px-6 py-4">
+        <div className="flex items-center space-x-2">
+          <div className="bg-red-600 p-1.5 rounded">
+            <Film className="h-6 w-6 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-red-600">MOVIEFLIX</h1>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
+          <h1 className="text-lg font-bold text-red-600">MOVIEFLIX</h1>
+        </div>
+        <Button
+          onClick={onGetStarted}
+          variant="primary"
+          className="bg-red-600 hover:bg-red-700 px-3 py-1 text-sm"
         >
-          <Button
-            onClick={onGetStarted}
-            variant="primary"
-            className="bg-red-600 hover:bg-red-700"
-          >
-            Sign In
-          </Button>
-        </motion.div>
+          Sign In
+        </Button>
       </header>
 
-      <div className="relative z-10 flex items-center justify-center min-h-[calc(100vh-100px)] p-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center text-center px-4">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-center max-w-4xl"
+          className="text-2xl md:text-4xl font-bold text-white mb-3"
         >
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
-          >
-            Unlimited movies, TV shows, and more
-          </motion.h1>
-          
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="text-xl md:text-2xl text-gray-300 mb-4"
-          >
-            Watch anywhere. Cancel anytime.
-          </motion.p>
-          
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="text-lg text-gray-400 mb-8"
-          >
-            Ready to watch? Enter your email to create or restart your membership.
-          </motion.p>
+          Discover movies, TV shows, and more
+        </motion.h1>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-lg mx-auto"
-          >
-            <Button
-              onClick={onGetStarted}
-              size="lg"
-              className="bg-red-600 hover:bg-red-700 text-lg px-8 py-3 w-full sm:w-auto"
-            >
-              <Play className="h-5 w-5 mr-2" />
-              Get Started
-            </Button>
-          </motion.div>
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-base md:text-lg text-gray-300 mb-2"
+        >
+        Sign in to explore thousands of movies, get personalized 
+         <br></br> recommendations, nd create your watchlist.
+        </motion.p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-left"
-          >
-            <div className="text-center">
-              <div className="bg-red-600/20 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Film className="h-8 w-8 text-red-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-2">Discover Movies</h3>
-              <p className="text-gray-400">Browse popular, top-rated, and now playing movies</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="bg-red-600/20 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Play className="h-8 w-8 text-red-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-2">Personal Watchlist</h3>
-              <p className="text-gray-400">Save movies to watch later and never miss a great film</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="bg-red-600/20 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Film className="h-8 w-8 text-red-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-2">Search & Filter</h3>
-              <p className="text-gray-400">Find exactly what you're looking for with powerful search</p>
-            </div>
-          </motion.div>
-        </motion.div>
+        <Button
+          onClick={onGetStarted}
+          className="bg-red-600 hover:bg-red-700 px-6 py-2 text-base mt-4"
+        >
+          <Play className="h-4 w-4 mr-2" />
+          Get Started
+        </Button>
+
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl w-full">
+          <div className="text-center px-2">
+            <Film className="h-6 w-6 text-red-600 mx-auto mb-2" />
+            <h3 className="text-sm font-semibold text-white">Discover Movies</h3>
+            <p className="text-xs text-gray-400">
+              Browse popular and top-rated titles
+            </p>
+          </div>
+          <div className="text-center px-2">
+            <Play className="h-6 w-6 text-red-600 mx-auto mb-2" />
+            <h3 className="text-sm font-semibold text-white">Watchlist</h3>
+            <p className="text-xs text-gray-400">
+              Save films to watch later
+            </p>
+          </div>
+          <div className="text-center px-2">
+            <Film className="h-6 w-6 text-red-600 mx-auto mb-2" />
+            <h3 className="text-sm font-semibold text-white">Search</h3>
+            <p className="text-xs text-gray-400">
+              Find exactly what you need
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

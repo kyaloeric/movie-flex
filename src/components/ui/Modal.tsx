@@ -29,7 +29,6 @@ const Modal: React.FC<ModalProps> = ({
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -38,7 +37,6 @@ const Modal: React.FC<ModalProps> = ({
             onClick={onClose}
           />
 
-          {/* Modal */}
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -50,7 +48,6 @@ const Modal: React.FC<ModalProps> = ({
               `}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Header */}
               {title && (
                 <div className="flex items-center justify-between p-6 border-b border-gray-700">
                   <h3 className="text-xl font-semibold text-white">{title}</h3>
@@ -65,7 +62,6 @@ const Modal: React.FC<ModalProps> = ({
                 </div>
               )}
 
-              {/* Content */}
               <div className="p-6">{children}</div>
             </motion.div>
           </div>

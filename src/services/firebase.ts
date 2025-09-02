@@ -25,7 +25,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
-// Google Auth Provider
 const googleProvider = new GoogleAuthProvider();
 
 // Helper function to convert Firebase user to our User type

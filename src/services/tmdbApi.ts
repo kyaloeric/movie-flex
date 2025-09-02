@@ -1,5 +1,5 @@
 import axios, { type AxiosResponse } from 'axios';
-import  { TMDB_CONFIG } from '../config/constants';
+import { TMDB_CONFIG } from '../config/constants';
 import type { Movie, MovieDetails, Credits, ApiResponse, Genre } from '../types/movie';
 
 class TMDBService {
@@ -15,7 +15,7 @@ class TMDBService {
       },
     });
 
-    //response interceptor for error handling
+    // Add response interceptors for error handling
     this.api.interceptors.response.use(
       (response) => response,
       (error) => {
@@ -39,7 +39,7 @@ class TMDBService {
   }
 
   private setCache<T>(key: string, data: T): void {
-    // limit cache size
+    // Limit cache size
     if (this.cache.size >= 50) {
       const oldestKey = this.cache.keys().next().value;
       oldestKey && this.cache.delete(oldestKey);
@@ -109,14 +109,14 @@ class TMDBService {
   }
 
   // Discover movies with filters
-  async discoverMovies(params: {
-    page?: number;
-    sort_by?: string;
-    with_genres?: string;
-    primary_release_year?: number;
-    vote_average_gte?: number;
-  } = {}): Promise<ApiResponse<Movie>> {
-    return this.request('/discover/movie', params);
+  async discoverMovies(page = 1): Promise<ApiResponse<Movie>> {
+    return this.request('/discover/movie', {
+      include_adult: false,
+      include_video: false,
+      language: 'en-US',
+      page,
+      sort_by: 'vote_count.desc'
+    });
   }
 
   // Similar movies

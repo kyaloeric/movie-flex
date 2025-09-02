@@ -34,7 +34,6 @@ const WatchlistPage: React.FC<WatchlistPageProps> = ({ onMovieClick }) => {
 
   return (
     <div className="space-y-6">
-      {/* Watchlist Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {watchlist.map((movie, index) => {
           const imageUrl = tmdbApi.getImageUrl(movie.poster_path, 'medium');
@@ -50,7 +49,6 @@ const WatchlistPage: React.FC<WatchlistPageProps> = ({ onMovieClick }) => {
               onClick={() => onMovieClick?.(movie)}
             >
               <div className="flex">
-                {/* Poster */}
                 <div className="w-24 h-36 flex-shrink-0">
                   <img
                     src={imageUrl}
@@ -60,7 +58,6 @@ const WatchlistPage: React.FC<WatchlistPageProps> = ({ onMovieClick }) => {
                   />
                 </div>
 
-                {/* Content */}
                 <div className="flex-1 p-4 flex flex-col justify-between">
                   <div>
                     <h3 className="text-white font-semibold line-clamp-2 mb-2 group-hover:text-red-400 transition-colors">
@@ -77,14 +74,12 @@ const WatchlistPage: React.FC<WatchlistPageProps> = ({ onMovieClick }) => {
                     </p>
                   </div>
 
-                  {/* Actions */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-1">
                       <Star className="h-3 w-3 text-yellow-400 fill-current" />
                       <span className="text-xs text-white">{movie.vote_average.toFixed(1)}</span>
                     </div>
 
-                    {/* Remove Button */}
                     <Button
                       variant="ghost"
                       size="sm"

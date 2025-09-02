@@ -4,6 +4,7 @@ import { tmdbApi } from '../services/tmdbApi';
 
 interface MovieStore {
   movies: Movie[];
+  discoverMovies: Movie[];
   currentMovie: MovieDetails | null;
   genres: Genre[];
   searchResults: Movie[];
@@ -13,10 +14,13 @@ interface MovieStore {
   searchLoading: boolean;
   error: string | null;
   currentPage: number;
+  searchPage: number;
   totalPages: number;
+  searchTotalPages: number;
   hasMorePages: boolean;
+  hasMoreSearchPages: boolean;
   
-  // Actions
+  fetchDiscoverMovies: (page?: number, append?: boolean) => Promise<void>;
   fetchPopularMovies: (page?: number, append?: boolean) => Promise<void>;
   fetchTopRatedMovies: (page?: number, append?: boolean) => Promise<void>;
   fetchNowPlayingMovies: (page?: number, append?: boolean) => Promise<void>;
@@ -27,10 +31,12 @@ interface MovieStore {
   clearSearch: () => void;
   clearError: () => void;
   loadMoreMovies: () => Promise<void>;
+  loadMoreSearchResults: () => Promise<void>;
 }
 
 export const useMovieStore = create<MovieStore>((set, get) => ({
   movies: [],
+  discoverMovies: [],
   currentMovie: null,
   genres: [],
   searchResults: [],
@@ -40,8 +46,27 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
   searchLoading: false,
   error: null,
   currentPage: 1,
+  searchPage: 1,
   totalPages: 1,
+  searchTotalPages: 1,
   hasMorePages: true,
+  hasMoreSearchPages: true,
+
+  fetchDiscoverMovies: async (page = 1, append = false) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await tmdbApi.discoverMovies(page);
+      set((state) => ({
+        discoverMovies: append ? [...state.discoverMovies, ...response.results] : response.results,
+        currentPage: response.page,
+        totalPages: Math.min(response.total_pages, 500), 
+        hasMorePages: response.page < Math.min(response.total_pages, 500),
+        loading: false,
+      }));
+    } catch (error) {
+      set({ error: (error as Error).message, loading: false });
+    }
+  },
 
   fetchPopularMovies: async (page = 1, append = false) => {
     set({ loading: true, error: null });
@@ -50,8 +75,8 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
       set((state) => ({
         movies: append ? [...state.movies, ...response.results] : response.results,
         currentPage: response.page,
-        totalPages: response.total_pages,
-        hasMorePages: response.page < response.total_pages,
+        totalPages: Math.min(response.total_pages, 500),
+        hasMorePages: response.page < Math.min(response.total_pages, 500),
         loading: false,
       }));
     } catch (error) {
@@ -66,8 +91,8 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
       set((state) => ({
         movies: append ? [...state.movies, ...response.results] : response.results,
         currentPage: response.page,
-        totalPages: response.total_pages,
-        hasMorePages: response.page < response.total_pages,
+        totalPages: Math.min(response.total_pages, 500),
+        hasMorePages: response.page < Math.min(response.total_pages, 500),
         loading: false,
       }));
     } catch (error) {
@@ -82,8 +107,8 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
       set((state) => ({
         movies: append ? [...state.movies, ...response.results] : response.results,
         currentPage: response.page,
-        totalPages: response.total_pages,
-        hasMorePages: response.page < response.total_pages,
+        totalPages: Math.min(response.total_pages, 500),
+        hasMorePages: response.page < Math.min(response.total_pages, 500),
         loading: false,
       }));
     } catch (error) {
@@ -110,7 +135,14 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
 
   searchMovies: async (query: string, page = 1, append = false) => {
     if (!query.trim()) {
-      set({ searchResults: [], searchQuery: '', searchLoading: false });
+      set({ 
+        searchResults: [], 
+        searchQuery: '', 
+        searchLoading: false,
+        searchPage: 1,
+        searchTotalPages: 1,
+        hasMoreSearchPages: false
+      });
       return;
     }
 
@@ -119,9 +151,9 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
       const response = await tmdbApi.searchMovies(query, page);
       set((state) => ({
         searchResults: append ? [...state.searchResults, ...response.results] : response.results,
-        currentPage: response.page,
-        totalPages: response.total_pages,
-        hasMorePages: response.page < response.total_pages,
+        searchPage: response.page,
+        searchTotalPages: Math.min(response.total_pages, 500),
+        hasMoreSearchPages: response.page < Math.min(response.total_pages, 500),
         searchLoading: false,
       }));
     } catch (error) {
@@ -148,10 +180,10 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
     set({
       searchResults: [],
       searchQuery: '',
+      searchPage: 1,
+      searchTotalPages: 1,
+      hasMoreSearchPages: false,
       searchFilters: { query: '' },
-      currentPage: 1,
-      totalPages: 1,
-      hasMorePages: true,
     });
   },
 
@@ -160,14 +192,18 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
   },
 
   loadMoreMovies: async () => {
-    const { currentPage, hasMorePages, searchQuery } = get();
+    const { currentPage, hasMorePages } = get();
     if (!hasMorePages) return;
 
     const nextPage = currentPage + 1;
-    if (searchQuery) {
-      await get().searchMovies(searchQuery, nextPage, true);
-    } else {
-      await get().fetchPopularMovies(nextPage, true);
-    }
+    await get().fetchDiscoverMovies(nextPage, true);
+  },
+
+  loadMoreSearchResults: async () => {
+    const { searchPage, hasMoreSearchPages, searchQuery } = get();
+    if (!hasMoreSearchPages || !searchQuery) return;
+
+    const nextPage = searchPage + 1;
+    await get().searchMovies(searchQuery, nextPage, true);
   },
 }));

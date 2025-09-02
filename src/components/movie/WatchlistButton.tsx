@@ -21,7 +21,7 @@ const WatchlistButton: React.FC<WatchlistButtonProps> = ({
   const inWatchlist = isInWatchlist(movie.id);
 
   const handleToggleWatchlist = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent triggering parent click events
+    e.stopPropagation(); 
     
     if (inWatchlist) {
       removeFromWatchlist(movie.id);

@@ -33,7 +33,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
       }
       onClose();
       setFormData({ email: '', password: '', displayName: '' });
-    } catch (err) {
+    } catch {
       // error is handled bstore
     }
   };
@@ -42,7 +42,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     try {
       await signInWithGoogle();
       onClose();
-    } catch (err) {
+    } catch  {
+      // error is handled by store, no action needed
     }
   };
 

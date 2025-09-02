@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import MovieCard from '../../components/movie/MovieCard';
 import type { Movie } from '../../types/movie';
+import type { HTMLAttributes, ImgHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
 
 // Mock the stores
 vi.mock('../../stores/useWatchlistStore', () => ({
@@ -15,9 +16,13 @@ vi.mock('../../stores/useWatchlistStore', () => ({
 // Mock framer-motion
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    img: ({ children, ...props }: any) => <img {...props}>{children}</img>,
-    button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+    div: ({ children, ...props }: HTMLAttributes<HTMLDivElement> & { children?: ReactNode }) => (
+      <div {...props}>{children}</div>
+    ),
+    img: ({ ...props }: ImgHTMLAttributes<HTMLImageElement>) => <img {...props} />,
+    button: ({ children, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { children?: ReactNode }) => (
+      <button {...props}>{children}</button>
+    ),
   },
 }));
 

@@ -47,6 +47,7 @@ function App() {
   // Load initial movies
   useEffect(() => {
     if (!authLoading) {
+      fetchPopularMovies(1);
     }
   }, [authLoading, fetchPopularMovies]);
 

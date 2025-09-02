@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import SearchBar from '../../components/movie/SearchBar';
+import type { InputHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
 
 const mockSearchMovies = vi.fn();
 const mockClearSearch = vi.fn();
@@ -15,7 +16,7 @@ vi.mock('../../stores/useMovieStore', () => ({
 }));
 
 vi.mock('../../components/ui/Input', () => ({
-  default: ({ value, onChange, onKeyPress, placeholder, className, ...props }: any) => (
+  default: ({ value, onChange, onKeyPress, placeholder, className, ...props }: InputHTMLAttributes<HTMLInputElement>) => (
     <input
       value={value}
       onChange={onChange}
@@ -28,7 +29,7 @@ vi.mock('../../components/ui/Input', () => ({
 }));
 
 vi.mock('../../components/ui/Button', () => ({
-  default: ({ children, onClick, disabled, className, ...props }: any) => (
+  default: ({ children, onClick, disabled, className, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { children?: ReactNode }) => (
     <button
       onClick={onClick}
       disabled={disabled}

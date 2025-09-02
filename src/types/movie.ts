@@ -13,6 +13,8 @@ export interface Movie {
   video: boolean;
   original_language: string;
   original_title: string;
+  credits?: Credits;
+
 }
 
 export interface MovieDetails extends Movie {
@@ -27,6 +29,7 @@ export interface MovieDetails extends Movie {
   production_countries: ProductionCountry[];
   production_companies: ProductionCompany[];
   spoken_languages: SpokenLanguage[];
+  credits?: Credits; 
 }
 
 export interface Genre {

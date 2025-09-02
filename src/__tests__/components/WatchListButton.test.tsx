@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import WatchlistButton from '../../components/movie/WatchlistButton';
 import type { Movie } from '../../types/movie';
+import type { HTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
 
 const mockAddToWatchlist = vi.fn();
 const mockRemoveFromWatchlist = vi.fn();
@@ -17,8 +18,12 @@ vi.mock('../../stores/useWatchlistStore', () => ({
 
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+    div: ({ children, ...props }: HTMLAttributes<HTMLDivElement> & { children?: ReactNode }) => (
+      <div {...props}>{children}</div>
+    ),
+    button: ({ children, ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { children?: ReactNode }) => (
+      <button {...props}>{children}</button>
+    ),
   },
 }));
 

@@ -37,49 +37,66 @@ const mapFirebaseUser = (firebaseUser: FirebaseUser): User => ({
 });
 
 export class AuthService {
-  // Sign up with email and password
-  static async signUp(email: string, password: string, displayName?: string): Promise<User> {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      
-      if (displayName) {
-        await updateProfile(userCredential.user, { displayName });
-      }
-      
-      return mapFirebaseUser(userCredential.user);
-    } catch (error: any) {
+// Sign up with email and password
+static async signUp(email: string, password: string, displayName?: string): Promise<User> {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    
+    if (displayName) {
+      await updateProfile(userCredential.user, { displayName });
+    }
+    
+    return mapFirebaseUser(userCredential.user);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Sign-up error:', error);
       throw new Error(error.message || 'Failed to create account');
     }
+    throw new Error('Failed to create account');
   }
+}
 
-  // Sign in with email and password
-  static async signIn(email: string, password: string): Promise<User> {
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      return mapFirebaseUser(userCredential.user);
-    } catch (error: any) {
+// Sign in with email and password
+static async signIn(email: string, password: string): Promise<User> {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return mapFirebaseUser(userCredential.user);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Sign-in error:', error);
       throw new Error(error.message || 'Failed to sign in');
     }
+    throw new Error('Failed to sign in');
   }
+}
 
-  // Sign in with Google
-  static async signInWithGoogle(): Promise<User> {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      return mapFirebaseUser(result.user);
-    } catch (error: any) {
+// Sign in with Google
+static async signInWithGoogle(): Promise<User> {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    return mapFirebaseUser(result.user);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Google sign-in error:', error);
       throw new Error(error.message || 'Failed to sign in with Google');
     }
+    throw new Error('Failed to sign in with Google');
   }
+}
 
-  // Sign out
-  static async signOut(): Promise<void> {
-    try {
-      await signOut(auth);
-    } catch (error: any) {
+// Sign out
+static async signOut(): Promise<void> {
+  try {
+    await signOut(auth);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Sign-out error:', error);
       throw new Error(error.message || 'Failed to sign out');
     }
+    throw new Error('Failed to sign out');
   }
+}
+
 
   // Listen to auth state changes
   static onAuthStateChange(callback: (user: User | null) => void): () => void {

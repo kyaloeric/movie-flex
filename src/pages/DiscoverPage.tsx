@@ -53,7 +53,6 @@ const DiscoverPage: React.FC<DiscoverPageProps> = ({ onMovieClick }) => {
         </div>
       </section>
 
-      {/* New Releases Section */}
       <section>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

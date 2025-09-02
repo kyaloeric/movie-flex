@@ -4,7 +4,7 @@ import type { Movie, MovieDetails, Credits, ApiResponse, Genre } from '../types/
 
 class TMDBService {
   private api;
-  private cache = new Map<string, { data: any; timestamp: number }>();
+  private cache = new Map<string, { data: unknown; timestamp: number }>();
   private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
   constructor() {
@@ -25,14 +25,14 @@ class TMDBService {
     );
   }
 
-  private getCacheKey(endpoint: string, params?: any): string {
+  private getCacheKey(endpoint: string, params?: Record<string, unknown>): string {
     return `${endpoint}_${JSON.stringify(params || {})}`;
   }
 
   private getFromCache<T>(key: string): T | null {
     const cached = this.cache.get(key);
     if (cached && Date.now() - cached.timestamp < this.CACHE_DURATION) {
-      return cached.data;
+      return cached.data as T;
     }
     this.cache.delete(key);
     return null;
@@ -42,12 +42,12 @@ class TMDBService {
     // Limit cache size
     if (this.cache.size >= 50) {
       const oldestKey = this.cache.keys().next().value;
-      oldestKey && this.cache.delete(oldestKey);
+      if (oldestKey) this.cache.delete(oldestKey);
     }
     this.cache.set(key, { data, timestamp: Date.now() });
   }
 
-  private async request<T>(endpoint: string, params?: any): Promise<T> {
+  private async request<T>(endpoint: string, params?: Record<string, unknown>): Promise<T> {
     const cacheKey = this.getCacheKey(endpoint, params);
     const cached = this.getFromCache<T>(cacheKey);
     
@@ -59,7 +59,6 @@ class TMDBService {
     this.setCache(cacheKey, response.data);
     return response.data;
   }
-
   // Popular movies
   async getPopularMovies(page = 1): Promise<ApiResponse<Movie>> {
     return this.request('/movie/popular', { page });

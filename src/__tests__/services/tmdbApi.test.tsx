@@ -38,7 +38,7 @@ vi.doMock('../../config/constants', () => ({
 }));
 
 describe('TMDBService', () => {
-  let tmdbApi: any;
+  let tmdbApi: typeof import('../../services/tmdbApi').tmdbApi;
 
   beforeEach(async () => {
     vi.clearAllMocks();

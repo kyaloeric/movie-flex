@@ -2,6 +2,7 @@ import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useMovieStore } from '../../stores/useMovieStore';
 import { tmdbApi } from '../../services/tmdbApi';
+import type { Movie, ApiResponse } from '../../types/movie';
 
 vi.mock('../../services/tmdbApi');
 const mockedTmdbApi = vi.mocked(tmdbApi);
@@ -22,13 +23,13 @@ describe('useMovieStore', () => {
       totalPages: 1,
       hasMorePages: true,
     });
-    
+
     vi.clearAllMocks();
   });
 
   it('initializes with correct default state', () => {
     const { result } = renderHook(() => useMovieStore());
-    
+
     expect(result.current.movies).toEqual([]);
     expect(result.current.loading).toBe(false);
     expect(result.current.error).toBe(null);
@@ -36,14 +37,14 @@ describe('useMovieStore', () => {
   });
 
   it('fetches popular movies successfully', async () => {
-    const mockResponse = {
+    const mockResponse: ApiResponse<Movie> = {
       page: 1,
-      results: [{ id: 1, title: 'Popular Movie' }],
+      results: [{ id: 1, title: 'Popular Movie', overview: '', poster_path: null, backdrop_path: null, release_date: '', vote_average: 0, vote_count: 0, genre_ids: [], popularity: 0, adult: false, video: false, original_language: '', original_title: '' }],
       total_pages: 10,
       total_results: 200,
     };
 
-    mockedTmdbApi.getPopularMovies.mockResolvedValueOnce(mockResponse as any);
+    mockedTmdbApi.getPopularMovies.mockResolvedValueOnce(mockResponse);
 
     const { result } = renderHook(() => useMovieStore());
 
@@ -73,14 +74,14 @@ describe('useMovieStore', () => {
   });
 
   it('searches movies successfully', async () => {
-    const mockResponse = {
+    const mockResponse: ApiResponse<Movie> = {
       page: 1,
-      results: [{ id: 2, title: 'Search Result' }],
+      results: [{ id: 2, title: 'Search Result', overview: '', poster_path: null, backdrop_path: null, release_date: '', vote_average: 0, vote_count: 0, genre_ids: [], popularity: 0, adult: false, video: false, original_language: '', original_title: '' }],
       total_pages: 5,
       total_results: 100,
     };
 
-    mockedTmdbApi.searchMovies.mockResolvedValueOnce(mockResponse as any);
+    mockedTmdbApi.searchMovies.mockResolvedValueOnce(mockResponse);
 
     const { result } = renderHook(() => useMovieStore());
 
@@ -95,10 +96,10 @@ describe('useMovieStore', () => {
 
   it('clears search results', async () => {
     const { result } = renderHook(() => useMovieStore());
-    
+
     await act(async () => {
       useMovieStore.setState({
-        searchResults: [{ id: 1 } as any],
+        searchResults: [{ id: 1, title: '', overview: '', poster_path: null, backdrop_path: null, release_date: '', vote_average: 0, vote_count: 0, genre_ids: [], popularity: 0, adult: false, video: false, original_language: '', original_title: '' }],
         searchQuery: 'test',
       });
     });
@@ -114,7 +115,7 @@ describe('useMovieStore', () => {
 
   it('clears error state', async () => {
     const { result } = renderHook(() => useMovieStore());
-    
+
     await act(async () => {
       useMovieStore.setState({ error: 'Test error' });
     });

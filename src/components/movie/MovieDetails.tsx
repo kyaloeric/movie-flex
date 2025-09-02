@@ -163,14 +163,14 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
                     </div>
                   )}
 
-                  {(movie as any).credits?.cast && (movie as any).credits.cast.length > 0 && (
+                  {movie.credits?.cast && movie.credits.cast.length > 0 && (
                     <div>
                       <h3 className="text-lg font-semibold text-white mb-3 flex items-center space-x-2">
                         <Users className="h-5 w-5" />
                         <span>Cast</span>
                       </h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                        {(movie as any).credits.cast.slice(0, 6).map((actor: any) => (
+                        {movie.credits.cast.slice(0, 6).map((actor) => (
                           <div key={actor.id} className="bg-gray-800 p-3 rounded-lg">
                             <p className="text-white font-medium text-sm truncate">{actor.name}</p>
                             <p className="text-gray-400 text-xs truncate">{actor.character}</p>

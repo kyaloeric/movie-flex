@@ -125,7 +125,7 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
       ]);
       
       set({ 
-        currentMovie: { ...details, credits } as any, 
+        currentMovie: { ...details, credits }, 
         loading: false 
       });
     } catch (error) {

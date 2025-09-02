@@ -10,11 +10,11 @@ interface SearchBarProps {
   onReturnToDiscover?: () => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearchStart, onReturnToDiscover }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ onSearchStart }) => {
   const [query, setQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   
-  const { searchMovies, clearSearch, searchQuery } = useMovieStore();
+  const { searchMovies, searchQuery } = useMovieStore();
 
   const handleSearch = () => {
     if (query.trim()) {
@@ -31,8 +31,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearchStart, onReturnToDiscover
 
   const handleClear = () => {
     setQuery('');
-    clearSearch();
-    onReturnToDiscover?.();
   };
 
   const handleBlur = () => {

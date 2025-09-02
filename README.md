@@ -212,4 +212,3 @@ Live Project Link: [https://moviefleix.netlify.app](https://moviefleix.netlify.a
 
 
 ---
-

@@ -36,9 +36,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearchStart, onReturnToDiscover
   };
 
   const handleBlur = () => {
-    if (!searchQuery && query) {
-      setQuery('');
-    }
+    setIsFocused(false);
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
   };
 
   return (
@@ -50,11 +52,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearchStart, onReturnToDiscover
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyPress={handleKeyPress}
-          onFocus={() => setIsFocused(true)}
+          onFocus={handleFocus}
           onBlur={handleBlur}
           className={`
             pr-20 transition-all duration-200 h-12 text-base
-            ${isFocused ? 'ring-2 ring-red-500 border-red-500' : ''}
+            ${isFocused ? 'ring-2 ring-red-500 border-red-500' : 'border-gray-600'}
           `}
         />
         

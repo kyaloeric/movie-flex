@@ -88,8 +88,8 @@ const MovieGrid: React.FC<MovieGridProps> = ({
         </motion.div>
       )}
 
-      {!loading && movies.length > 0 && totalPages > 1 && (
-        <div className="mt-8">
+      {!loading && hasSearched && movies.length > 0 && totalPages > 1 && (
+        <div className="mt-6">
           <Pagination
             currentPage={currentPage || 1}
             totalPages={totalPages || 1}

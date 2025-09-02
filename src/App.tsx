@@ -17,6 +17,7 @@ function App() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [, setSelectedMovie] = useState<Movie | null>(null);
   const [showMovieDetails, setShowMovieDetails] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const { user, loading: authLoading, initializeAuth } = useAuthStore();
   const {
@@ -33,8 +34,15 @@ function App() {
   // Initialize authentication
   useEffect(() => {
     const unsubscribe = initializeAuth();
+    setIsInitialized(true);
     return unsubscribe;
   }, [initializeAuth]);
+
+  useEffect(() => {
+    if (user && isInitialized) {
+      setCurrentView('all');
+    }
+  }, [user, isInitialized]);
 
   // Load initial movies
   useEffect(() => {

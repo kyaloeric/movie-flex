@@ -59,7 +59,7 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
       set((state) => ({
         discoverMovies: append ? [...state.discoverMovies, ...response.results] : response.results,
         currentPage: response.page,
-        totalPages: Math.min(response.total_pages, 500), 
+        totalPages: Math.min(response.total_pages, 500), // TMDB limit
         hasMorePages: response.page < Math.min(response.total_pages, 500),
         loading: false,
       }));
@@ -146,11 +146,13 @@ export const useMovieStore = create<MovieStore>((set, get) => ({
       return;
     }
 
-    set({ searchLoading: true, error: null, searchQuery: query });
+    set({ searchLoading: true, error: null });
+    
     try {
       const response = await tmdbApi.searchMovies(query, page);
       set((state) => ({
         searchResults: append ? [...state.searchResults, ...response.results] : response.results,
+        searchQuery: query,
         searchPage: response.page,
         searchTotalPages: Math.min(response.total_pages, 500),
         hasMoreSearchPages: response.page < Math.min(response.total_pages, 500),

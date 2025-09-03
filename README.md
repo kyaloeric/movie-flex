@@ -27,7 +27,7 @@ See the **live deployed project** on Netlify [here](https://moviefleix.netlify.a
 - **CI/CD**: Automated testing and deployment with GitHub Actions
 - **Performance**: Optimized with lazy loading and memoization
 
-## 🛠 Technology Stack
+## Technology Stack
 
 - **Frontend**: React 18 + TypeScript
 - **Styling**: Tailwind CSS
@@ -44,8 +44,8 @@ See the **live deployed project** on Netlify [here](https://moviefleix.netlify.a
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/movieflix-app.git
-cd movieflix-app
+git clone https://github.com/kyaloeric/movie-flex.git
+cd movie-flex
 ```
 
 2. Install dependencies:
